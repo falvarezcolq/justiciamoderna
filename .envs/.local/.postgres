@@ -1,0 +1,7 @@
+# PostgreSQL
+# ------------------------------------------------------------------------------
+POSTGRES_HOST=postgres
+POSTGRES_PORT=5432
+POSTGRES_DB=justiciamoderna
+POSTGRES_USER=lVzBxTNJFpHtbvTOVCeGGMXQifgnZCuU
+POSTGRES_PASSWORD=Sfgz7tRquo8XN8FBc0m6vft1rGcZo6JktJjQMt40sm4UqixtLCgxXUsCtmr7B7kX

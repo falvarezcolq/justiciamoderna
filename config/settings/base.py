@@ -74,7 +74,10 @@ THIRD_PARTY_APPS = [
 ]
 
 LOCAL_APPS = [
+    "justiciamoderna.rols.apps.RolConfig",
+    "justiciamoderna.regions.apps.RegionConfig",
     "justiciamoderna.users.apps.UsersConfig",
+
     # Your stuff: custom apps go here
 ]
 # https://docs.djangoproject.com/en/dev/ref/settings/#installed-apps
@@ -294,10 +297,14 @@ SOCIALACCOUNT_ADAPTER = "justiciamoderna.users.adapters.SocialAccountAdapter"
 # django-rest-framework - https://www.django-rest-framework.org/api-guide/settings/
 REST_FRAMEWORK = {
     "DEFAULT_AUTHENTICATION_CLASSES": (
+        "rest_framework_simplejwt.authentication.JWTAuthentication",
         "rest_framework.authentication.SessionAuthentication",
-        "rest_framework.authentication.TokenAuthentication",
+        # "rest_framework.authentication.TokenAuthentication",
     ),
-    "DEFAULT_PERMISSION_CLASSES": ("rest_framework.permissions.IsAuthenticated",),
+    "DEFAULT_PERMISSION_CLASSES": (
+        "rest_framework.permissions.AllowAny",
+        # "rest_framework.permissions.DjangoModelPermissions",
+    ),
 }
 # Your stuff...
 # ------------------------------------------------------------------------------

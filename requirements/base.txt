@@ -19,3 +19,7 @@ django-redis==4.11.0  # https://github.com/niwinz/django-redis
 
 # Django REST Framework
 djangorestframework==3.11.0  # https://github.com/encode/django-rest-framework
+
+# Django JWT
+PyJWT==2.2.0
+djangorestframework-simplejwt==5.0.0 #https://github.com/SimpleJWT/django-rest-framework-simplejwt

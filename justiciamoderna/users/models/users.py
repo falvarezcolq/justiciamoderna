@@ -12,7 +12,7 @@ class User(AbstractUser,BaseModel):
 
     email = EmailField(unique=True)
     name = CharField(_("Name of User"), blank=True, max_length=255)
-    dni = CharField(_("DNI of User"), blank=True, max_length=32)
+    run = CharField(_("RUN of User"), blank=True, max_length=32)
     cellphone = CharField(_("cellphone of User"), blank=True, max_length=32)
     telephone = CharField(_("Telfone of User"), blank=True, max_length=32)
     address = CharField(_("addresss"),blank=True,max_length=255)

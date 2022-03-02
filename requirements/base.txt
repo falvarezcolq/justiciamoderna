@@ -23,3 +23,7 @@ djangorestframework==3.11.0  # https://github.com/encode/django-rest-framework
 # Django JWT
 PyJWT==2.2.0
 djangorestframework-simplejwt==5.0.0 #https://github.com/SimpleJWT/django-rest-framework-simplejwt
+
+## addded by fac
+django-filter==2.4.0
+django-countries==7.2.1

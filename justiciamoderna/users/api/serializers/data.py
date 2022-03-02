@@ -9,4 +9,5 @@ USER_FIELDS = [
     'last_name',
     'email',
     'rol',
+    'run',
 ]

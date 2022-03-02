@@ -20,7 +20,8 @@ from rest_framework_simplejwt.views import TokenViewBase
 
 
 # Models
-from justiciamoderna.users.models import User
+from justiciamoderna.users.models.users import User
+from justiciamoderna.users.models.profilepicture import ProfilePicture,RUNPicture,MatriculaPicture
 
 # Utils
 # from utils.pagination import CustomPagination
@@ -29,7 +30,7 @@ from justiciamoderna.users.models import User
 from justiciamoderna.users.api.serializers import UserModelSerializer,TokenObtainPairSerializer,UserCompleteModelSerializer
 
 from ..serializers.lawyer import LawyerCreateSerializer
-
+from ..serializers.profilepictures import ProfilePictureSerializer,RUNPictureSerializer,MatriculaPictureSerializer
 class UserViewSet(mixins.RetrieveModelMixin,
                   mixins.ListModelMixin,
                   # mixins.UpdateModelMixin,
@@ -55,7 +56,7 @@ class UserViewSet(mixins.RetrieveModelMixin,
             # 'destroy', 'log']:
             permissions = [IsAuthenticated, ]
 
-        elif self.action in ['updatepassword']:
+        elif self.action in ['profilepicture']:
             permissions = [IsAuthenticated, ]
         else:
             permissions = [AllowAny]
@@ -67,13 +68,69 @@ class UserViewSet(mixins.RetrieveModelMixin,
         """ User update password """
         serializer = LawyerCreateSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
-        # serializer.save()
-        response_data = {
-            "message": _('password updated')
-        }
+        serializer.save()
+        response_data = {"message": _('user Created')}
         return Response(response_data, status=status.HTTP_200_OK)
 
-    #
+
+
+    @action(detail=False, methods=['POST','DELETE'])
+    def profilepicture(self,request):
+        """ User update user picture """
+        if request.method == 'DELETE':
+            try:
+                profilepicture = request.user.profilepictures.get(is_current_profile_picture = True)
+                profilepicture.is_current_profile_picture = False
+                profilepicture.save()
+                return Response(status=status.HTTP_204_NO_CONTENT)
+            except ProfilePicture.DoesNotExist:
+                return Response(status=status.HTTP_404_NOT_FOUND)
+
+
+        serializer = ProfilePictureSerializer(data=request.data,context={'request':self.request})
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        response_data = serializer.data
+        return Response(response_data, status=status.HTTP_200_OK)
+
+    @action(detail=False, methods=['POST','DELETE'])
+    def runpicture(self,request):
+        """ User update user picture """
+        if request.method == 'DELETE':
+            try:
+                runpicture = request.user.runpictures.get(status= True)
+                runpicture.status = False
+                runpicture.save()
+                return Response(status=status.HTTP_204_NO_CONTENT)
+            except RUNPicture.DoesNotExist:
+                return Response(status=status.HTTP_404_NOT_FOUND)
+
+        serializer = RUNPictureSerializer(data=request.data,context={'request':self.request})
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        response_data = serializer.data
+        return Response(response_data, status=status.HTTP_200_OK)
+
+
+    @action(detail=False, methods=['POST','DELETE'])
+    def matriculapicture(self,request):
+        """ User update user picture """
+        if request.method == 'DELETE':
+            try:
+                matriculapicture = request.user.matriculapictures.get(status= True)
+                matriculapicture.status = False
+                matriculapicture.save()
+                return Response(status=status.HTTP_204_NO_CONTENT)
+            except MatriculaPicture.DoesNotExist:
+                return Response(status=status.HTTP_404_NOT_FOUND)
+
+        serializer = MatriculaPictureSerializer(data=request.data,context={'request':self.request})
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        response_data = serializer.data
+        return Response(response_data, status=status.HTTP_200_OK)
+
+
     # @action(detail=False, methods=['post'])
     # def updatepassword(self,request):
     #     """ User update password """
@@ -86,7 +143,7 @@ class UserViewSet(mixins.RetrieveModelMixin,
     #         "message": _('password updated')
     #     }
     #     return Response(response_data, status=status.HTTP_200_OK)
-    #
+
     #
     # @action(detail=False, methods=['post'])
     # def updateuserpassword(self, request):

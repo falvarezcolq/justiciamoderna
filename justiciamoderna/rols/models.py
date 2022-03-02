@@ -28,8 +28,25 @@ class PermissionApp():
 
 
 class Rol(BaseModel):
-    name = models.CharField(max_length=64)
+    ADMIN = "AD"
+    LAWYER = "LA"
+    CUSTOMER = "CU"
 
+
+    LIST_OF_ROLS = [
+        (ADMIN,"Admin"),
+        (LAWYER,"Lawyer"),
+        (CUSTOMER,"Customer"),
+    ]
+
+
+
+    name = models.CharField(max_length=64,choices=LIST_OF_ROLS,unique=True)
+
+    def __str__(self):
+        dict = { x[0]:x[1] for  x in self.LIST_OF_ROLS}
+
+        return dict[self.name]
 
 class RolPermission(BaseModel):
     rol = models.ForeignKey(Rol,on_delete=models.CASCADE,related_name="permissions")

@@ -1,6 +1,7 @@
 from rest_framework.routers import DefaultRouter, SimpleRouter
 from django.conf import settings
 from .views.users import TokenObtainPairView,UserViewSet,DataSessionApiView
+from .views.degrees import DegreeViewSet
 from rest_framework_simplejwt.views import TokenRefreshView
 from django.urls import path
 
@@ -11,6 +12,7 @@ else:
     router = SimpleRouter()
 
 router.register("users", UserViewSet)
+router.register("degrees",DegreeViewSet)
 
 
 app_name = "api"

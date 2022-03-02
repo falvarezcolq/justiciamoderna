@@ -7,7 +7,7 @@ from justiciamoderna.users.models import User
 
 
 
-class profile(models.Model):
+class Profile(models.Model):
     GENDER_CHOICES = [
         ("F", "Female"),
         ("M", "Male"),

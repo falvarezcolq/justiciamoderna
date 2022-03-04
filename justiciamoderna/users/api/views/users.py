@@ -66,7 +66,7 @@ class UserViewSet(mixins.RetrieveModelMixin,
     @action(detail=False, methods=['post'])
     def registerlawyer(self,request):
         """ User update password """
-        serializer = LawyerCreateSerializer(data=request.data)
+        serializer = LawyerCreateSerializer(data=request.data,context={"request":self.request})
         serializer.is_valid(raise_exception=True)
         serializer.save()
         response_data = {"message": _('user Created')}

@@ -50,7 +50,9 @@ class LawyerCreateSerializer(serializers.Serializer):
 
     def create(self,data):
         ID_USER= get_ID_USER()
+        name = (data['first_name'] + ' '+data['last_name']).strip()
         user = User.objects.create_user(username=ID_USER,
+                                        name=name,
                                         email =data['email'],
                                         password= data['password'],
                                         first_name = data['first_name'],

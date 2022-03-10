@@ -8,6 +8,9 @@ class Region(BaseModel):
     name = models.CharField(max_length=64)
     country = CountryField(default=None)
 
+    def __str__(self):
+        return "{}: {}".format(self.country,self.name)
+
 
 
 

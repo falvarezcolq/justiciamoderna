@@ -16,6 +16,5 @@ class DegreeModelSerializer(serializers.ModelSerializer):
 
 
     def create(self, data):
-        import pdb;pdb.set_trace()
         instance = Degree.objects.create(**data)
         return instance

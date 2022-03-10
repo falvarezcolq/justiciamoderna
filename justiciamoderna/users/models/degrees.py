@@ -29,3 +29,6 @@ class Degree(ImageModel):
     university = models.CharField(_("University"),max_length=256)
     career = models.CharField(_("Career"),max_length=256)
     academic_degree = models.CharField(max_length=2,choices=LIST_OF_DEGREE)
+
+    def __str__(self):
+        return "%s" % (str(self.user),)

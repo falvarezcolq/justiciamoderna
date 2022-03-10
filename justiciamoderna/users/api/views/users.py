@@ -55,7 +55,6 @@ class UserViewSet(mixins.RetrieveModelMixin,
             # 'updateuseraccess',
             # 'destroy', 'log']:
             permissions = [IsAuthenticated, ]
-
         elif self.action in ['profilepicture']:
             permissions = [IsAuthenticated, ]
         else:

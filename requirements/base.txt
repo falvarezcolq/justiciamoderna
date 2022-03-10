@@ -27,3 +27,5 @@ djangorestframework-simplejwt==5.0.0 #https://github.com/SimpleJWT/django-rest-f
 ## addded by fac
 django-filter==2.4.0
 django-countries==7.2.1
+django-suit==0.2.28
+

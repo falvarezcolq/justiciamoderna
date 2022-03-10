@@ -10,6 +10,9 @@ from rest_framework.serializers import ValidationError
 # models
 from justiciamoderna.users.models import User,Profile,Lawyer,UserPermission
 from justiciamoderna.rols.models import Rol,RolPermission,PermissionApp
+from justiciamoderna.regions.models import Region
+from justiciamoderna.regions.serializers import RegionModelSerializer
+
 from rest_framework.validators import UniqueValidator
 
 def get_ID_USER():
@@ -38,12 +41,18 @@ class LawyerCreateSerializer(serializers.Serializer):
                                       )
     region = serializers.IntegerField()
 
+    def validate_region(self,data):
+        try:
+            region = Region.objects.get(pk=data)
+        except Region.DoesNotExist:
+            raise ValidationError(_("Region does not exists"))
+        return region
 
     def validate(self, attrs):
         try:
             self.context['rol'] = Rol.objects.get(name=Rol.LAWYER)
         except Rol.DoesNotExist:
-            ValidationError(_("Admin has not yet created the rol lawyer"))
+            raise ValidationError(_("Admin has not yet created the rol lawyer"))
         return attrs
 
 
@@ -63,10 +72,11 @@ class LawyerCreateSerializer(serializers.Serializer):
                                         address = data['address'],
                                         need_update_profile = True,
                                         rol = self.context['rol'],
-                                        reviewed_by_admin = False )
+                                        reviewed_by_admin = User.PENDING )
         Lawyer.objects.create(
             user=user,
-            matricula=data['matricula']
+            matricula=data['matricula'],
+            region=data['region'],
         )
 
         UserPermission.objects.create(
@@ -74,8 +84,6 @@ class LawyerCreateSerializer(serializers.Serializer):
             permission=PermissionApp.USER_LOGIN,
             state=True,
         )
-
-
 
 
         return user

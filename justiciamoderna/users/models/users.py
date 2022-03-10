@@ -8,8 +8,14 @@ from justiciamoderna.utils.models import BaseModel
 
 
 class User(AbstractUser,BaseModel):
-
-
+    PASSED = 'A'
+    REJECTED = 'R'
+    PENDING = 'P'
+    REVIEW_CHOICES = [
+        (PASSED, "PASSED"),
+        (REJECTED, "REJECTED"),
+        (PENDING, "PENDING"),
+    ]
     email = EmailField(unique=True)
     name = CharField(_("Name of User"), blank=True, max_length=255)
     run = CharField(_("RUN of User"), blank=True, max_length=32)
@@ -17,14 +23,14 @@ class User(AbstractUser,BaseModel):
     telephone = CharField(_("Telfone of User"), blank=True, max_length=32)
     address = CharField(_("addresss"),blank=True,max_length=255)
     need_update_profile = BooleanField(default=False)
-    reviewed_by_admin = BooleanField(default=False)
+    reviewed_by_admin = CharField(_("Reviewed by Admin"),max_length=2,choices=REVIEW_CHOICES)
     rol = ForeignKey( Rol, on_delete=SET_NULL, related_name="users", null=True)
 
     USERNAME_FIELD  = 'email'
     REQUIRED_FIELDS = []
 
-    def get_absolute_url(self):
-        return reverse("users:detail", kwargs={"username": self.username})
+    # def get_absolute_url(self):
+    #     return reverse("users:detail", kwargs={"username": self.username})
 
 
 class UserPermission(BaseModel):

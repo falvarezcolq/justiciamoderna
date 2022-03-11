@@ -3,3 +3,4 @@ from .profile import Profile
 from .lawyer import Lawyer
 from .degrees import Degree
 from .profilepicture import ProfilePicture
+from .areas import Area

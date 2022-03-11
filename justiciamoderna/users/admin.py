@@ -5,11 +5,18 @@ from django.contrib.auth import get_user_model
 from django.urls import reverse
 from django.utils.http import urlencode
 from django.utils.html import format_html
-from justiciamoderna.users.forms import UserChangeForm, UserCreationForm
+from justiciamoderna.users.forms import UserChangeForm, UserCreationForm,LawyerChangeForm
 
 User = get_user_model()
 
-from justiciamoderna.users.models import UserPermission,Lawyer,Degree,Profile,ProfilePicture
+from justiciamoderna.users.models import (
+    UserPermission,
+    Lawyer,
+    Degree,
+    Profile,
+    ProfilePicture,
+    Area,
+)
 
 @admin.register(User)
 class UserAdmin(auth_admin.UserAdmin):
@@ -21,9 +28,11 @@ class UserAdmin(auth_admin.UserAdmin):
     fieldsets = (
         (_('Crendentials'), {'fields': ('username', 'password')}),
 
-        (_('Personal info'), {'fields': (
+        (_('Personal Information'), {'fields': (
+
                                          'first_name',
                                          'last_name',
+                                         'name',
                                          )}),
         (_('Permissions'), {
             'fields': ('is_active', 'is_staff', 'is_superuser',
@@ -88,8 +97,9 @@ admin.site.register(UserPermission)
 # admin.site.register(Lawyer)
 @admin.register(Lawyer)
 class RegionAdmin(admin.ModelAdmin):
-    list_display = ('user','matricula','view_lawyer_degrees_link')
 
+    list_display = ('user','matricula','view_lawyer_degrees_link')
+    filter_horizontal = ('areas',)
     def view_lawyer_degrees_link(self,obj):
         count = obj.user.degrees.count()
         if count == 0 :
@@ -106,7 +116,6 @@ class RegionAdmin(admin.ModelAdmin):
     view_lawyer_degrees_link.short_description = _("Degrees")
 
 
-
 admin.site.register(Degree)
 
 
@@ -121,5 +130,7 @@ class RegionAdmin(admin.ModelAdmin):
 
 
 admin.site.register(Profile)
+
+admin.site.register(Area)
 
 

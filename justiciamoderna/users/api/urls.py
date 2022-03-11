@@ -1,7 +1,15 @@
 from rest_framework.routers import DefaultRouter, SimpleRouter
 from django.conf import settings
-from .views.users import TokenObtainPairView,UserViewSet,DataSessionApiView
-from .views.degrees import DegreeViewSet
+
+from .views import (
+    LawyerViewSet,
+    DegreeViewSet,
+    TokenObtainPairView,
+    UserViewSet,
+    DataSessionApiView,
+    AreaViewSet,
+    LawyerAreaViewSet,
+)
 from rest_framework_simplejwt.views import TokenRefreshView
 from django.urls import path
 
@@ -13,7 +21,10 @@ else:
 
 router.register("users", UserViewSet)
 router.register("degrees",DegreeViewSet)
-
+router.register("degrees",DegreeViewSet)
+router.register("areas", AreaViewSet)
+router.register("lawyers",LawyerViewSet)
+router.register("lawyerarea",LawyerAreaViewSet)
 
 app_name = "api"
 urlpatterns = [

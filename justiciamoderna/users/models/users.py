@@ -29,8 +29,11 @@ class User(AbstractUser,BaseModel):
     USERNAME_FIELD  = 'email'
     REQUIRED_FIELDS = []
 
-    # def get_absolute_url(self):
-    #     return reverse("users:detail", kwargs={"username": self.username})
+    def __str__(self):
+        return self.name
+
+    def get_absolute_url(self):
+        return reverse("users:detail", kwargs={"username": self.username})
 
 
 class UserPermission(BaseModel):

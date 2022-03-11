@@ -30,6 +30,7 @@ from justiciamoderna.users.models.profilepicture import ProfilePicture,RUNPictur
 from justiciamoderna.users.api.serializers import UserModelSerializer,TokenObtainPairSerializer,UserCompleteModelSerializer
 
 from ..serializers.lawyer import LawyerCreateSerializer
+from ..serializers.customers import CustomerCreateSerializer
 from ..serializers.profilepictures import ProfilePictureSerializer,RUNPictureSerializer,MatriculaPictureSerializer
 class UserViewSet(mixins.RetrieveModelMixin,
                   mixins.ListModelMixin,
@@ -71,6 +72,14 @@ class UserViewSet(mixins.RetrieveModelMixin,
         response_data = {"message": _('user Created')}
         return Response(response_data, status=status.HTTP_200_OK)
 
+    @action(detail=False, methods=['post'])
+    def registercustomer(self,request):
+        """ User update password """
+        serializer = CustomerCreateSerializer(data=request.data,context={"request":self.request})
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        response_data = {"message": _('user Created')}
+        return Response(response_data, status=status.HTTP_200_OK)
 
 
     @action(detail=False, methods=['POST','DELETE'])

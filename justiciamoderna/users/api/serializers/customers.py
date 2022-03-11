@@ -10,8 +10,7 @@ from rest_framework.serializers import ValidationError
 # models
 from justiciamoderna.users.models import User,Profile,Lawyer,UserPermission
 from justiciamoderna.rols.models import Rol,RolPermission,PermissionApp
-from justiciamoderna.regions.models import Region
-from justiciamoderna.regions.serializers import RegionModelSerializer
+
 
 from rest_framework.validators import UniqueValidator
 
@@ -25,35 +24,28 @@ def get_ID_USER():
         pass
     return  str( INIT + last) # Return ID USER
 
-class LawyerCreateSerializer(serializers.Serializer):
+
+
+class CustomerCreateSerializer(serializers.Serializer):
+
+    """ Create customer with this serializer. """
     email = serializers.EmailField(
         validators=[UniqueValidator(queryset=User.objects.all())]
     )
     password = serializers.CharField(min_length=8)
-    first_name = serializers.CharField(min_length=2,max_length=36)
-    last_name = serializers.CharField(min_length=2,max_length=36)
+    first_name = serializers.CharField(min_length=2, max_length=36)
+    last_name = serializers.CharField(min_length=2, max_length=36)
     run = serializers.CharField(max_length=32)
-    cellphone = serializers.CharField(  max_length=32)
-    telephone = serializers.CharField(  max_length=32)
-    address = serializers.CharField(  max_length=255)
-    matricula = serializers.CharField(min_length=6,max_length=32,allow_blank=True
-                                      # validators=[UniqueValidator(queryset=Lawyer.objects.all())]
-                                      )
-    region = serializers.IntegerField()
+    cellphone = serializers.CharField(max_length=32)
 
-    def validate_region(self,data):
-        try:
-            region = Region.objects.get(pk=data)
-        except Region.DoesNotExist:
-            raise ValidationError(_("Region does not exists"))
-        return region
 
     def validate(self, attrs):
         try:
-            self.context['rol'] = Rol.objects.get(name=Rol.LAWYER)
+            self.context['rol'] = Rol.objects.get(name=Rol.CUSTOMER)
         except Rol.DoesNotExist:
-            raise ValidationError(_("Admin has not yet created the rol lawyer"))
+            raise ValidationError(_("Admin has not yet created the rol Customer"))
         return attrs
+
 
     def create(self,data):
         ID_USER= get_ID_USER()
@@ -66,16 +58,9 @@ class LawyerCreateSerializer(serializers.Serializer):
                                         last_name = data['last_name'],
                                         run = data['run'],
                                         cellphone = data['cellphone'],
-                                        telephone = data['telephone'],
-                                        address = data['address'],
-                                        need_update_profile = True,
+                                        need_update_profile = False,
                                         rol = self.context['rol'],
                                         reviewed_by_admin = User.PENDING )
-        Lawyer.objects.create(
-            user=user,
-            matricula=data['matricula'],
-            region=data['region'],
-        )
 
         UserPermission.objects.create(
             user=user,
@@ -83,12 +68,3 @@ class LawyerCreateSerializer(serializers.Serializer):
             state=True,
         )
         return user
-
-
-class LawyerModelSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Lawyer
-        fields = '__all__'
-
-
-

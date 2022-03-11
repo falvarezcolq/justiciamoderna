@@ -3,11 +3,12 @@ from django.core.exceptions import ValidationError
 from django.utils.translation import ugettext_lazy as _
 
 User = get_user_model()
-
+from justiciamoderna.users.models.lawyer import Lawyer
 
 class UserChangeForm(forms.UserChangeForm):
     class Meta(forms.UserChangeForm.Meta):
         model = User
+        fields = '__all__'
 
 
 class UserCreationForm(forms.UserCreationForm):
@@ -28,3 +29,11 @@ class UserCreationForm(forms.UserCreationForm):
             return username
 
         raise ValidationError(self.error_messages["duplicate_username"])
+
+
+from django import forms as f
+class LawyerChangeForm(f.ModelForm):
+    class Meta:
+        model = Lawyer
+        fields = '__all__'
+

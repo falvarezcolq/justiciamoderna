@@ -26,9 +26,10 @@ class User(AbstractUser,BaseModel):
     need_update_profile = BooleanField(default=False)
     reviewed_by_admin = CharField(_("Reviewed by Admin"),max_length=2,choices=REVIEW_CHOICES)
     rol = ForeignKey( Rol, on_delete=SET_NULL, related_name="users", null=True)
+    # username= CharField(_("username"), blank=True, max_length=255,unique=True,default="")
 
     USERNAME_FIELD  = 'email'
-    REQUIRED_FIELDS = []
+    REQUIRED_FIELDS = ['username','birth_date']
 
     def __str__(self):
         return self.name

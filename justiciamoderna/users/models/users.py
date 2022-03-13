@@ -1,5 +1,5 @@
 from django.contrib.auth.models import AbstractUser
-from django.db.models import CharField,ForeignKey,SET_NULL,CASCADE,BooleanField,EmailField
+from django.db.models import CharField,ForeignKey,SET_NULL,CASCADE,BooleanField,EmailField,DateField
 from django.urls import reverse
 from django.utils.translation import ugettext_lazy as _
 from justiciamoderna.rols.models import Rol,PermissionApp
@@ -19,6 +19,7 @@ class User(AbstractUser,BaseModel):
     email = EmailField(unique=True)
     name = CharField(_("Name of User"), blank=True, max_length=255)
     run = CharField(_("RUN of User"), blank=True, max_length=32)
+    birth_date = DateField(_("Birth date"))
     cellphone = CharField(_("cellphone of User"), blank=True, max_length=32)
     telephone = CharField(_("Telfone of User"), blank=True, max_length=32)
     address = CharField(_("addresss"),blank=True,max_length=255)

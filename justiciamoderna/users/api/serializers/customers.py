@@ -36,6 +36,7 @@ class CustomerCreateSerializer(serializers.Serializer):
     first_name = serializers.CharField(min_length=2, max_length=36)
     last_name = serializers.CharField(min_length=2, max_length=36)
     run = serializers.CharField(max_length=32)
+    birth_date = serializers.DateField(required=True)
     cellphone = serializers.CharField(max_length=32)
 
 
@@ -57,6 +58,7 @@ class CustomerCreateSerializer(serializers.Serializer):
                                         first_name = data['first_name'],
                                         last_name = data['last_name'],
                                         run = data['run'],
+                                        birth_date = data['birth_date'],
                                         cellphone = data['cellphone'],
                                         need_update_profile = False,
                                         rol = self.context['rol'],

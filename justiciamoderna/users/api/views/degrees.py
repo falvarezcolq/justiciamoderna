@@ -27,3 +27,8 @@ class DegreeViewSet(mixins.CreateModelMixin,
         self.perform_create(serializer)
         headers = self.get_success_headers(serializer.data)
         return Response(serializer.data, status=status.HTTP_201_CREATED)
+
+
+    def get_queryset(self):
+        user = self.request.user
+        return Degree.objects.filter(user=user)

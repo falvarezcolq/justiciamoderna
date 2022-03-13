@@ -21,13 +21,7 @@ class LawyerAreaViewSet(mixins.CreateModelMixin,
 
     queryset = Area.objects.all()
     serializer_class = AreaModelSerializer
-
-    def get_permissions(self):
-        """Assign permission based on action """
-        permissions =[AllowAny]
-        if self.action in ['create','destroy','list']:
-            permissions.append(IsAuthenticated)
-        return [p() for p in permissions]
+    permission_classes = [IsAuthenticated]
 
     def create(self, request, *args, **kwargs):
         serializer = AddAreaToLawyerSerializer(data=request.data,context={'request':request})
@@ -50,5 +44,16 @@ class LawyerAreaViewSet(mixins.CreateModelMixin,
         lawyer.areas.remove(instance)
         return Response(status=status.HTTP_204_NO_CONTENT)
 
+
+    def get_queryset(self):
+        """Return lawyer's areas."""
+
+        try:
+            lawyer = self.request.user.lawyer
+        except Lawyer.DoesNotExist:
+            # raise ValidationError(_("User have not lawyer account"))
+            return Response(status=status.HTTP_404_NOT_FOUND)
+
+        return lawyer.areas.all()
 
 
